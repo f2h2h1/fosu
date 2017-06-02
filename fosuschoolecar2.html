@@ -4,9 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>校车查询</title>
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://cdn.bootcss.com/vue/2.3.3/vue.min.js"></script>
+    <script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -23,8 +26,8 @@
                 <div class="form-group">
                     <label>所在位置{{selected}}</label>
                     <select class="form-control" v-model="selected">
-                        <option v-for="(item, key) in campus" :value="item.number">{{item.text}}</option>
-                    </select>
+                            <option v-for="item in campus" :value="item.number">{{item.text}}</option>
+                        </select>
                 </div>
             </div>
         </div>
@@ -34,8 +37,8 @@
                 <h3 class="text-center">{{ train }}</h3>
                 <p class="text-center">{{ stopOverSpecialStation }}</p>
                 <!--<p class="text-center">假期及法定节假日不发车</p>
-                <p class="text-center">考试周和特殊情况校车班次、时间将有所调整</p>
-                <p class="text-center">具体情况请看学校安排</p>-->
+<p class="text-center">考试周和特殊情况校车班次、时间将有所调整</p>
+<p class="text-center">具体情况请看学校安排</p>-->
                 <ul style="padding-left: 10px;">
                     <li>假期及法定节假日不发车</li>
                     <li>考试周和特殊情况校车班次、时间将有所调整</li>
@@ -110,9 +113,8 @@
             </nav>
         </div>
     </div>
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdn.bootcss.com/vue/2.3.3/vue.min.js"></script>
+
+
     <script>
         "use strict";
         var app = new Vue({
@@ -202,7 +204,7 @@
                         }],
                     },
                 },
-                selected: 0,
+                selected: null,
                 train: null,
                 stopOverSpecialStation: null,
                 otherTrain: [],
@@ -241,13 +243,15 @@
                         tagTime = tagTime.getTime() / 1000;
                         let waitTime = tagTime - nowTimestamp;
                         if (waitTime >= 0) {
+                            // console.log(tagTime)
+                            // console.log(nowTimestamp)
                             let waitHour;
                             let waitMinute;
                             let waitSecond;
                             waitSecond = waitTime % 60;
                             waitMinute = Math.round(waitTime / 60);
                             waitMinute = waitMinute % 60;
-                            waitHour = Math.round((waitTime / 60) / 60);
+                            waitHour = Math.floor((waitTime / 60) / 60);
                             if (this.otherTrain.length === 0) {
                                 this.train = waitHour + " 小时 " + waitMinute + " 分钟 " + waitSecond + " 秒";
                                 if (timetableArray[i].stopOverSpecialStation != 0) {
